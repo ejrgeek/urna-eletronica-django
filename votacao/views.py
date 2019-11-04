@@ -10,16 +10,16 @@ def secret(request):
 
 def zerezima():
 
-    with open('/home/ejrgeek/FACULDADE/4Periodo/UrnaDCE/votacao/votos/votos.json', 'r') as votos_ler:
+    with open('caminhoDoArquivo.json', 'r') as votos_ler:
         votos_dados = json.load(votos_ler)
 
     for v in votos_dados:
         votos_dados[v] = 0
 
-        with open('/home/ejrgeek/FACULDADE/4Periodo/UrnaDCE/votacao/votos/votos.json', 'w') as votos_att:
+        with open('caminhoDoArquivo.json', 'w') as votos_att:
             json.dump(votos_dados, votos_att)
 
-    zerezima_txt = open('/home/ejrgeek/FACULDADE/4Periodo/UrnaDCE/votacao/votos/zerezima.txt', 'w')
+    zerezima_txt = open('caminhoDoArquivo.txt', 'w')
 
     for v in votos_dados:
         zerezima_txt.write(f"{v}: {votos_dados[v]}")
@@ -27,10 +27,10 @@ def zerezima():
 
 
 def boletim_urna():
-    with open('/home/ejrgeek/FACULDADE/4Periodo/UrnaDCE/votacao/votos/votos.json', 'r') as votos:
+    with open('caminhoDoArquivo.json', 'r') as votos:
         votos_dados = json.load(votos)
 
-    zerezima = open('/home/ejrgeek/FACULDADE/4Periodo/UrnaDCE/votacao/votos/zerezima.txt', 'w')
+    zerezima = open('caminhoDoArquivo.txt', 'w')
 
     for v in votos_dados:
         zerezima.write(f"{v}: {votos_dados[v]}")
@@ -50,7 +50,7 @@ def secret_code(request):
 
 
 def voto_branco(request):
-    with open('/home/ejrgeek/FACULDADE/4Periodo/UrnaDCE/votacao/votos/votos.json', 'r') as votos_ler:
+    with open('caminhoDoArquivo.json', 'r') as votos_ler:
         votos_dados = json.load(votos_ler)
 
     for v in votos_dados:
@@ -58,7 +58,7 @@ def voto_branco(request):
         if v == 'branco':
             votos_dados[v] += 1
 
-            with open('/home/ejrgeek/FACULDADE/4Periodo/UrnaDCE/votacao/votos/votos.json', 'w') as votos_att:
+            with open('caminhoDoArquivo.json', 'w') as votos_att:
                 json.dump(votos_dados, votos_att)
 
     return render(request, 'fim.html')
@@ -72,7 +72,7 @@ def votar(request):
 
     chapa_votar = chapa.nome_chapa
 
-    with open('/home/ejrgeek/FACULDADE/4Periodo/UrnaDCE/votacao/votos/votos.json', 'r') as votos_ler:
+    with open('caminhoDoArquivo.json', 'r') as votos_ler:
         votos_dados = json.load(votos_ler)
 
     for v in votos_dados:
@@ -80,7 +80,7 @@ def votar(request):
         if v == chapa_votar:
             votos_dados[v] += 1
 
-            with open('/home/ejrgeek/FACULDADE/4Periodo/UrnaDCE/votacao/votos/votos.json', 'w') as votos_att:
+            with open('caminhoDoArquivo.json', 'w') as votos_att:
                 json.dump(votos_dados, votos_att)
 
     return render(request, 'fim.html')
