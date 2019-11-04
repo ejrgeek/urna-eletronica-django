@@ -1,0 +1,5 @@
+db.sqlite3
+printer.py
+votacao/test.py
+.idea
+venv

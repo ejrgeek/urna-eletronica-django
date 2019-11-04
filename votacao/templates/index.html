@@ -1,0 +1,194 @@
+<!doctype html>
+{% load static %}
+
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <style>
+            .modal {
+              display: none; /* Hidden by default */
+              position: fixed; /* Stay in place */
+              z-index: 1; /* Sit on top */
+              left: 0;
+              top: 0;
+              width: 100%; /* Full width */
+              height: 100%; /* Full height */
+              overflow: auto; /* Enable scroll if needed */
+              background-color: rgb(0,0,0); /* Fallback color */
+              background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            }
+
+            /* Modal Content/Box */
+            .modal-content {
+              background-color: #fefefe;
+              margin: 15% auto; /* 15% from the top and centered */
+              padding: 20px;
+              border: 1px solid #888;
+              width: 80%; /* Could be more or less, depending on screen size */
+            }
+
+            /* The Close Button */
+            .close {
+              color: #aaa;
+              float: right;
+              font-size: 28px;
+              font-weight: bold;
+            }
+
+            .close:hover,
+            .close:focus {
+              color: black;
+              text-decoration: none;
+              cursor: pointer;
+            }
+        </style>
+        <title>Urna DCE</title>
+    </head>
+
+    <body>
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark position-static">
+            <div class="container">
+                <a class="navbar-brand" href="{% url 'home' %}">URNA DCE</a>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="row" style="margin-top: 40px">
+                <div class="col-sm-4"></div>
+                <div id="tipo-candidato" class="col-sm-4">
+                    <b>CANDIDATO</b>
+                </div>
+                <div class="col-sm-4"></div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row" style="margin-top: 10px">
+                <div class="col-sm-8">
+                    <div class="row">
+                        <form method="POST" class="form_candidato" action="/chapa/">
+                            {% csrf_token %}
+                            <label class="col-sm-3">NÚMERO:</label>
+
+
+                            {% with n1=chapa.numero.0 %}
+                            <input id="primeiro_numero" class="col-sm-1" type="text" maxlength="1" required
+                                   onkeyup="javascript:enter_key('segundo_numero', event)"
+                                   autofocus name="primeiro_numero" value="{{n1}}">
+                            {% endwith %}
+
+                            {% with n2=chapa.numero.1 %}
+                            <input id="segundo_numero" class="col-sm-1" type="text" maxlength="1" required
+                                   name="segundo_numero" value="{{n2}}"
+                                    onkeyup="javascript:enter_key_two(event)">
+                            {% endwith %}
+
+                        </form>
+                        <label class="col-sm-3"></label>
+                    </div>
+
+
+                    <div class="row">
+                        <label class="col-sm-3">NOME:</label>
+                        <label class="col-sm-6">{{chapa.nome_candidato}}</label>
+                        <label class="col-sm-3"></label>
+                    </div>
+
+                    <div class="row">
+                        <label class="col-sm-3">VICE:</label>
+                        <label class="col-sm-6">{{chapa.nome_vice}}</label>
+                        <label class="col-sm-3"></label>
+                    </div>
+
+                    <div class="row">
+                        <label class="col-sm-3">CHAPA:</label>
+                        <label class="col-sm-6">{{chapa.nome_chapa}}</label>
+                        <label class="col-sm-3"></label>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <img src="{{chapa.profile.url}}" alt="" style="height: 200px">
+                </div>
+            </div>
+            <hr>
+            <b><p><span style="color: red">Nulo</span>: Qualquer número inexistente</p></b>
+            <b><p><span style="color: #757474">Branco</span>: Tecle B</p></b>
+        </div>
+
+        <!-- MODAL ZEREZIMA | B.U. -->
+        <button id="myBtn" style="opacity: 0">Open Modal</button>
+
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+
+          <!-- Modal content -->
+          <div class="modal-content">
+            <span class="close">&times;</span>
+              <form action="/secret_code/" method="post" id="form-secret">
+                  {% csrf_token %}
+                  <input id="secret-code" name="secret-code" class="form-control" type="password" placeholder="Senha Secreta" autofocus>
+              </form>
+          </div>
+
+        </div>
+
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'js/jquery-3.3.1.slim.min.js' %}"></script>
+        <script src="{% static 'js/popper.min.js' %}"></script>
+        <script type="text/javascript">
+            function enter_key(id, event) {
+                if (event.keyCode !== 109 && event.keyCode !== 106){
+                    // TECLA -
+                    // DIFERENTE DE BRANCO
+                    document.getElementById(id).focus();
+                }else if (event.keyCode === 109){
+                    // TECLA -
+                    // BRANCO
+                    window.location.href = "../branco/";
+                }else if (event.keyCode === 106){
+                    document.getElementById("myBtn").click();
+                    document.getElementById("secret-code").focus();
+                }
+            }
+
+
+            $('#segundo_numero').keyup(function () {
+                $('.form_candidato').submit();
+            })
+
+            // MODAL
+            var modal = document.getElementById("myModal");
+
+            // Get the button that opens the modal
+            var btn = document.getElementById("myBtn");
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+
+            // When the user clicks on the button, open the modal
+            btn.onclick = function() {
+              modal.style.display = "block";
+            }
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function() {
+              modal.style.display = "none";
+            }
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+              if (event.target == modal) {
+                modal.style.display = "none";
+              }
+            }
+
+        </script>
+    </body>
+
+</html>

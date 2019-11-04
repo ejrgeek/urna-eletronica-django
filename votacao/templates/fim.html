@@ -1,0 +1,47 @@
+<!doctype html>
+{% load static %}
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+        <title>Urna DCE</title>
+        <style>
+            h1 {
+                position: fixed;
+                top: 45%;
+                left: 45%;
+                margin-top: -60px;
+                margin-left: -100px;
+                color: #000;
+                font-size: 10em;
+                background: #fff;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <h1 id="fim">FIM</h1>
+        <audio id="som" src="/static/audio/som.mp3" hidden></audio>
+        <script type="text/javascript">
+            window.onload = function() {
+                document.getElementById('som').play();
+                    try {
+                        var som = new Media('/static/audio/som.mp3', function onSuccess() {
+                        }, function onError(error) {
+                            $('#admin-bar').html('ERRO: ' + error.message);
+                        });
+                        som.play();
+                    } catch (e) {}
+                setTimeout(function () {
+
+                    window.location.href = "../home/";
+                }, 2000);
+            }
+        </script>
+    </body>
+
+</html>

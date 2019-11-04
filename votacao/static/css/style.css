@@ -1,0 +1,18 @@
+html, body{
+    overflow: hidden;
+}
+
+#tipo-candidato{
+    font-size: 40px;
+    font-weight: bold;
+}
+
+#primeiro_numero{
+    padding: 0 5px;
+    font-size: 40px;
+}
+
+#segundo_numero{
+    padding: 0 5px;
+    font-size: 40px;
+}

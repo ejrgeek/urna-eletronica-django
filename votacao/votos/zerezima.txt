@@ -1,0 +1,7 @@
+branco: 0
+nulo: 0
+fafic: 0
+ifpb: 0
+ufcg: 0
+fasp: 0
+fsm: 0

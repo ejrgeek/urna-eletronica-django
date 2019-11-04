@@ -1,0 +1,123 @@
+<!doctype html>
+{% load static %}
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <title>Urna DCE</title>
+    </head>
+
+    <body>
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark position-static">
+            <div class="container">
+                <a class="navbar-brand" href="{% url 'home' %}">URNA DCE</a>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="row" style="margin-top: 40px">
+                <div class="col-sm-4"></div>
+                <div id="tipo-candidato" class="col-sm-4">
+                    <b>CANDIDATO</b>
+                </div>
+                <div class="col-sm-4"></div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row" style="margin-top: 10px">
+                <div class="col-sm-8">
+                    <div class="row">
+
+                        <form method="POST" class="form_candidato" id="form_candidato" action="/votado/">
+                            {% csrf_token %}
+                            <label class="col-sm-3">NÚMERO:</label>
+
+                            {% with n1=chapa.numero.0 %}
+                            <input id="primeiro_numero" class="col-sm-1" type="text" maxlength="1" required
+                                  name="primeiro_numero" value="{{n1}}">
+                            {% endwith %}
+
+                            {% with n2=chapa.numero.1 %}
+                            <input id="segundo_numero" class="col-sm-1" type="text" maxlength="1" required
+                                   name="segundo_numero" value="{{n2}}" autofocus onkeyup="enter_key(event)">
+                            {% endwith %}
+                            <input id="enviar" type="submit" style="display:none" />
+                        </form>
+                        <label class="col-sm-3"></label>
+                    </div>
+
+
+                    <div class="row">
+                        <label class="col-sm-3">NOME:</label>
+                        <label class="col-sm-6">{{chapa.nome_candidato}}</label>
+                        <label class="col-sm-3"></label>
+                    </div>
+
+                    <div class="row">
+                        <label class="col-sm-3">VICE:</label>
+                        <label class="col-sm-6">{{chapa.nome_vice}}</label>
+                        <label class="col-sm-3"></label>
+                    </div>
+
+                    <div class="row">
+                        <label class="col-sm-3">CHAPA:</label>
+                        <label class="col-sm-6">{{chapa.nome_chapa}}</label>
+                        <label class="col-sm-3"></label>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <img src="{{chapa.profile.url}}" alt="" style="height: 200px">
+                </div>
+
+            </div>
+            <hr>
+            <b><p><span style="color: orange">C</span> para corrigir o voto</p></b>
+            <b><p><span style="color: green">CONFIRMAR</span> para votar</p></b>
+
+        </div>
+
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'js/jquery-3.3.1.slim.min.js' %}"></script>
+        <script src="{% static 'js/popper.min.js' %}"></script>
+        <script type="text/javascript">
+
+            $("input").keypress(function(event){
+                if (event.keyCode == 13){
+                    // TECLA ENTER
+                    // CONFIRMAR VOTO
+                    $("form").submit();
+                }else if (event.keyCode == 107){
+                    // TECLA +
+                    // CORRIGE
+                    window.location.href = "../home/";
+                }
+            });
+
+            function enter_key(event) {
+                if (event.keyCode === 13){
+                    // TECLA ENTER
+                    $("form").submit();
+                }else if (event.keyCode === 107){
+                    // TECLA +
+                    window.location.href = "../home/";
+                }
+            }
+
+            window.onload = function () {
+                function fixo(){
+                    $(window).scrollTop(0);
+                }
+                $(window).bind('scroll', fixo);
+            }
+
+
+        </script>
+    </body>
+
+</html>
