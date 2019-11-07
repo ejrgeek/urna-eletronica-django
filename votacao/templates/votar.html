@@ -19,7 +19,7 @@
         </nav>
 
         <div class="container">
-            <div class="row" style="margin-top: 40px">
+            <div class="row" style="margin-top: 10px">
                 <div class="col-sm-4"></div>
                 <div id="tipo-candidato" class="col-sm-4">
                     <b>CANDIDATO</b>
@@ -38,17 +38,17 @@
                             <label class="col-sm-3">NÚMERO:</label>
 
                             {% with n1=chapa.numero.0 %}
-                            <input id="primeiro_numero" class="col-sm-1" type="text" maxlength="1" required
+                            <input id="primeiro_numero" class="col-sm-2" type="text" maxlength="1" required
                                   name="primeiro_numero" value="{{n1}}">
                             {% endwith %}
 
                             {% with n2=chapa.numero.1 %}
-                            <input id="segundo_numero" class="col-sm-1" type="text" maxlength="1" required
+                            <input id="segundo_numero" class="col-sm-2" type="text" maxlength="1" required
                                    name="segundo_numero" value="{{n2}}" autofocus onkeyup="enter_key(event)">
                             {% endwith %}
                             <input id="enviar" type="submit" style="display:none" />
                         </form>
-                        <label class="col-sm-3"></label>
+                        <label class="col-sm-1"></label>
                     </div>
 
 
@@ -72,7 +72,7 @@
                 </div>
 
                 <div class="col-sm-4">
-                    <img src="{{chapa.profile.url}}" alt="" style="height: 200px">
+                    <img src="{{chapa.profile.url}}" alt="" style="width: 200px">
                 </div>
 
             </div>
