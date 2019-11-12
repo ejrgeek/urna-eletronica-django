@@ -99,8 +99,18 @@ def voto_branco(request):
 
 def votar(request):
 
-    numero = str(request.POST.get("primeiro_numero"))
-    numero += str(request.POST.get("segundo_numero"))
+    #numero = str(request.POST.get("primeiro_numero"))
+    n1 = str(request.POST.get("primeiro_numero"))
+    #numero += str(request.POST.get("segundo_numero"))
+    n2 += str(request.POST.get("segundo_numero"))
+
+    if n1 == "" or n1 == " " or n1 is None:
+        n1 = "0"
+
+    if n2 == "" or n2 == " " or n2 is None:
+        n2 = "0"
+    numero = n1+n2
+
     if numero == "" or numero == " " or numero is None:
         numero = "00"
     print(numero)
