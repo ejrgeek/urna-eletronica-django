@@ -144,7 +144,11 @@
         <script type="text/javascript">
             
             function enter_key(id, event) {
-                if (event.keyCode !== 109 && event.keyCode !== 106){
+                if (event.keyCode === 110 || event.keyCode === 111 || event.keyCode === 144){
+                    //alert("bug");
+                    document.getElementById("primeiro_numero").value = "";
+                    document.getElementById("primeiro_numero").focus();
+                }else if (event.keyCode !== 109 && event.keyCode !== 106){
                     // TECLA -
                     // DIFERENTE DE BRANCO
                     document.getElementById(id).focus();
@@ -158,6 +162,13 @@
                 }
             }
 
+            function enter_key_two(event){
+                if (event.keyCode === 110 || event.keyCode === 111 || event.keyCode === 144 || event.keyCode === 109 || event.keyCode === 106){
+                    //alert("bug");
+                    document.getElementById("segundo_numero").value = "";
+                    document.getElementById("segundo_numero").focus();
+                }
+            }
 
             $('#segundo_numero').keyup(function () {
                 $('.form_candidato').submit();

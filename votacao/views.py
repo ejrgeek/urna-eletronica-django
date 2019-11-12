@@ -101,7 +101,14 @@ def votar(request):
 
     numero = str(request.POST.get("primeiro_numero"))
     numero += str(request.POST.get("segundo_numero"))
-    chapa = Chapa.objects.get(numero=numero)
+    if numero == "" or numero == " " or numero is None:
+        numero = "00"
+    print(numero)
+    try:
+        chapa = Chapa.objects.get(numero=numero)
+    except Exception as e:
+        chapa = Chapa.objects.get(numero="00")
+
     chapa_votar = chapa.nome_chapa
 
     with open('/home/pi/Documents/urna-eletronica-django/votacao/votos/votos.json', 'r') as votos_ler:
