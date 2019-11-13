@@ -71,7 +71,7 @@
             <div class="row" style="margin-top: 10px">
                 <div class="col-sm-8">
                     <div class="row">
-                        <form method="POST" class="form_candidato" action="/chapa/">
+                        <form method="POST" class="form_candidato" action="/chapa/" autocomplete="off">
                             {% csrf_token %}
                             <label class="col-sm-3">NÚMERO:</label>
 
@@ -79,13 +79,13 @@
                             {% with n1=chapa.numero.0 %}
                             <input id="primeiro_numero" class="col-sm-2" type="text" maxlength="1" required
                                    onkeyup="javascript:enter_key('segundo_numero', event)"
-                                   autofocus name="primeiro_numero" value="{{n1}}">
+                                   autofocus name="primeiro_numero" value="{{n1}}" autocomplete="off">
                             {% endwith %}
 
                             {% with n2=chapa.numero.1 %}
                             <input id="segundo_numero" class="col-sm-2" type="text" maxlength="1" required
                                    name="segundo_numero" value="{{n2}}"
-                                    onkeyup="javascript:enter_key_two(event)">
+                                    onkeyup="javascript:enter_key_two(event)" autocomplete="off">
                             {% endwith %}
 
                         </form>
@@ -144,7 +144,7 @@
         <script type="text/javascript">
             
             function enter_key(id, event) {
-                if (event.keyCode === 110 || event.keyCode === 111 || event.keyCode === 144 || event.keyCode == 107 ){
+                if (event.keyCode === 110 || event.keyCode === 111 || event.keyCode === 144 || event.keyCode === 107 || event.keyCode === 13 || event.keyCode === 8 || event.keyCode === 144 || event.keyCode === 33 || event.keyCode === 34 || event.keyCode === 35 || event.keyCode === 36 || event.keyCode === 40 || event.keyCode === 39 || event.keyCode === 37 || event.keyCode === 38 || event.keyCode === 46 || event.keyCode === 45 || event.keyCode === 8 || event.keyCode === 12){
                     //alert("bug");
                     document.getElementById("primeiro_numero").value = "";
                     document.getElementById("primeiro_numero").focus();
@@ -163,16 +163,15 @@
             }
 
             function enter_key_two(event){
-                if (event.keyCode === 110 || event.keyCode === 111 || event.keyCode === 144 || event.keyCode === 109 || event.keyCode === 106){
+                if (event.keyCode === 110 || event.keyCode === 111 || event.keyCode === 144 || event.keyCode === 109 || event.keyCode === 106 || event.keyCode === 107 || event.keyCode === 13 || event.keyCode === 8 || event.keyCode === 144 || event.keyCode === 33 || event.keyCode === 34 || event.keyCode === 35 || event.keyCode === 36 || event.keyCode === 40 || event.keyCode === 39 || event.keyCode === 37 || event.keyCode === 38 || event.keyCode === 46 || event.keyCode === 45 || event.keyCode === 8 || event.keyCode === 12){
                     //alert("bug");
                     document.getElementById("segundo_numero").value = "";
                     document.getElementById("segundo_numero").focus();
+                }else{
+                    $('.form_candidato').submit();
                 }
-            }
 
-            $('#segundo_numero').keyup(function () {
-                $('.form_candidato').submit();
-            })
+            }
 
             // MODAL
             var modal = document.getElementById("myModal");
