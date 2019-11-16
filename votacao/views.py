@@ -119,7 +119,7 @@ def votar(request):
     except Exception as e:
         chapa = Chapa.objects.get(numero="00")
 
-    chapa_votar = chapa.nome_chapa
+    chapa_votar = chapa.numero
 
     with open('/home/pi/Documents/urna-eletronica-django/votacao/votos/votos.json', 'r') as votos_ler:
         votos_dados = json.load(votos_ler)
