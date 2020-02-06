@@ -12,58 +12,56 @@ def secret(request):
 
 
 def zerezima():
-
-    #! IMPLEMENTAR METODO DE ZERAR OS VOTOS DO BANCO
-
-    zerezima_txt = open('/home/pi/Documents/urna-eletronica-django/votacao/votos/zerezima.txt', 'w')
-    zerezima_txt.write(" ")
-    zerezima_txt.write(" ")
-    zerezima_txt.write(" ")
-    zerezima_txt.write(" ")
-    zerezima_txt.write("ELEIÇÕES DCE - FAFIC 2019\n\n")
-
-    for v in votos_dados:
-        zerezima_txt.write(f"{v}: {votos_dados[v]}")
-        zerezima_txt.write("\n")
-        
-    data = datetime.now()
-    data = str(data.day) + "/" + str(data.month) + "/" + str(data.year)
-    hora = datetime.now()
-    hora = str(hora.hour) + ":" + str(hora.minute) + ":" + str(hora.second)
-    
-    zerezima_txt.write("\nGERADO:")
-    zerezima_txt.write("\n")
-    zerezima_txt.write(data)
-    zerezima_txt.write("\n")
-    zerezima_txt.write(hora)
-    zerezima_txt.close()
-    cmd("lp -d Lotus-LT-668 /home/pi/Documents/urna-eletronica-django/votacao/votos/zerezima.txt")
-
-
-def boletim_urna():
-
-    #! IMPLEMENTAR BOLETIM DE URNA
-
     zerezima = open('/home/pi/Documents/urna-eletronica-django/votacao/votos/zerezima.txt', 'w')
-    zerezima.write("    ELEIÇÕES DCE - FAFIC 2019\n\n") #MAX 28 CHAR
 
-    for v in votos_dados:
-        zerezima.write(f"{v}: {votos_dados[v]}")
+    zerezima.write("ELEIÇÕES\n\n")  # MAX 28 CHAR
+
+    todas_chapas = Chapa.objects.all()
+    for index in todas_chapas:
+        index.numero_votos = 0
+        index.save()
+        zerezima.write(f"{index.nome_chapa}:\t\t{index.numero_votos}")
         zerezima.write("\n")
         
     data = datetime.now()
     data = str(data.day) + "/" + str(data.month) + "/" + str(data.year)
     hora = datetime.now()
     hora = str(hora.hour) + ":" + str(hora.minute) + ":" + str(hora.second)
-    
-    zerezima.write("\nGERADO:")
-    zerezima.write("\n")
-    zerezima.write(data)
-    zerezima.write("\n")
-    zerezima.write(hora)
-    zerezima.close()
-    cmd("lp -d Lotus-LT-668 /home/pi/Documents/urna-eletronica-django/votacao/votos/zerezima.txt")
 
+    zerezima.write("\n---------------")
+    zerezima.write("\nGERADO EM:")
+    zerezima.write("\n")
+    zerezima.write(f'Data:\t{data}')
+    zerezima.write("\n")
+    zerezima.write(f'Hora:\t{hora}')
+    zerezima.close()
+    #cmd("lp -d Lotus-LT-668 /home/pi/Documents/urna-eletronica-django/votacao/votos/zerezima.txt")
+
+
+def boletim_urna():
+    zerezima = open('/home/pi/Documents/urna-eletronica-django/votacao/votos/zerezima.txt', 'w')
+
+    boletim.write("ELEIÇÕES\n\n")  # MAX 28 CHAR
+
+    todas_chapas = Chapa.objects.all()
+    for index in todas_chapas:
+        boletim.write(f"{index.nome_chapa}:\t\t{index.numero_votos}")
+        boletim.write("\n")
+        
+    data = datetime.now()
+    data = str(data.day) + "/" + str(data.month) + "/" + str(data.year)
+    hora = datetime.now()
+    hora = str(hora.hour) + ":" + str(hora.minute) + ":" + str(hora.second)
+    
+    boletim.write("\n---------------")
+    boletim.write("\nGERADO EM:")
+    boletim.write("\n")
+    boletim.write(f'Data:\t{data}')
+    boletim.write("\n")
+    boletim.write(f'Hora:\t{hora}')
+    boletim.close()
+
+    #cmd("lp -d Lotus-LT-668 /home/pi/Documents/urna-eletronica-django/votacao/votos/zerezima.txt")
 
 def secret_code(request):
     code = str(request.POST.get("secret-code"))
