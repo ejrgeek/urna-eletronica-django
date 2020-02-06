@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Chapa
 from datetime import datetime
+from .forms import ChapaForm
 import json
 from os import system as cmd
 # Create your views here.
@@ -12,14 +13,7 @@ def secret(request):
 
 def zerezima():
 
-    with open('/home/pi/Documents/urna-eletronica-django/votacao/votos/votos.json', 'r') as votos_ler:
-        votos_dados = json.load(votos_ler)
-
-    for v in votos_dados:
-        votos_dados[v] = 0
-
-        with open('/home/pi/Documents/urna-eletronica-django/votacao/votos/votos.json', 'w') as votos_att:
-            json.dump(votos_dados, votos_att)
+    #! IMPLEMENTAR METODO DE ZERAR OS VOTOS DO BANCO
 
     zerezima_txt = open('/home/pi/Documents/urna-eletronica-django/votacao/votos/zerezima.txt', 'w')
     zerezima_txt.write(" ")
@@ -47,8 +41,8 @@ def zerezima():
 
 
 def boletim_urna():
-    with open('/home/pi/Documents/urna-eletronica-django/votacao/votos/votos.json', 'r') as votos:
-        votos_dados = json.load(votos)
+
+    #! IMPLEMENTAR BOLETIM DE URNA
 
     zerezima = open('/home/pi/Documents/urna-eletronica-django/votacao/votos/zerezima.txt', 'w')
     zerezima.write("    ELEIÇÕES DCE - FAFIC 2019\n\n") #MAX 28 CHAR
@@ -70,6 +64,7 @@ def boletim_urna():
     zerezima.close()
     cmd("lp -d Lotus-LT-668 /home/pi/Documents/urna-eletronica-django/votacao/votos/zerezima.txt")
 
+
 def secret_code(request):
     code = str(request.POST.get("secret-code"))
     if code == "0000":
@@ -83,16 +78,13 @@ def secret_code(request):
 
 
 def voto_branco(request):
-    with open('/home/pi/Documents/urna-eletronica-django/votacao/votos/votos.json', 'r') as votos_ler:
-        votos_dados = json.load(votos_ler)
+    try:
+        chapa = Chapa.objects.get(numero="BR")
+    except Exception as e:
+        chapa = Chapa.objects.get(numero="BR")
 
-    for v in votos_dados:
-
-        if v == 'branco':
-            votos_dados[v] += 1
-
-            with open('/home/pi/Documents/urna-eletronica-django/votacao/votos/votos.json', 'w') as votos_att:
-                json.dump(votos_dados, votos_att)
+    chapa.numero_votos += 1
+    chapa.save()
 
     return render(request, 'fim.html')
 
@@ -109,28 +101,18 @@ def votar(request):
 
     if n2 == "" or n2 == '' or n2 == " " or n2 is None:
         n2 = "0"
+
     numero = n1+n2
 
     if numero == "" or numero == " " or numero is None:
         numero = "00"
-    print(numero)
     try:
         chapa = Chapa.objects.get(numero=numero)
     except Exception as e:
         chapa = Chapa.objects.get(numero="00")
 
-    chapa_votar = chapa.nome_chapa
-
-    with open('/home/pi/Documents/urna-eletronica-django/votacao/votos/votos.json', 'r') as votos_ler:
-        votos_dados = json.load(votos_ler)
-
-    for v in votos_dados:
-
-        if v == chapa_votar:
-            votos_dados[v] += 1
-
-            with open('/home/pi/Documents/urna-eletronica-django/votacao/votos/votos.json', 'w') as votos_att:
-                json.dump(votos_dados, votos_att)
+    chapa.numero_votos += 1
+    chapa.save()
 
     return render(request, 'fim.html')
 
@@ -148,6 +130,16 @@ def mostra_chapa(request):
         chapa = ""
 
     return render(request, 'votar.html', {'chapa': chapa})
+
+
+def cadastrar_chapa(request):
+    form = ChapaForm(request.POST, request.FILES)
+    if form.is_valid():
+        form.save()
+        return render(request, 'index.html')
+    else:
+        print(form)
+    return render(request, 'cadastrar_chapa.html', {'form': form})
 
 
 def home(request):

@@ -5,4 +5,4 @@ from .models import Chapa
 class ChapaForm(ModelForm):
     class Meta:
         model = Chapa
-        fields = '__all__'
+        fields = 'nome_chapa', 'nome_candidato', 'nome_vice', 'numero', 'profile'
